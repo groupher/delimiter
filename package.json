@@ -1,5 +1,5 @@
 {
-  "name": "@editorjs/delimiter",
+  "name": "@groupher/delimiter",
   "version": "1.1.0",
   "keywords": [
     "codex editor",
@@ -10,15 +10,15 @@
   ],
   "description": "Delimiter Tool for Editor.js",
   "license": "MIT",
-  "repository": "https://github.com/editor-js/delimiter",
+  "repository": "https://github.com/groupher/delimiter",
   "main": "./dist/bundle.js",
   "scripts": {
     "build": "webpack --mode production",
     "build:dev": "webpack --mode development --watch"
   },
   "author": {
-    "name": "CodeX Team",
-    "email": "team@ifmo.su"
+    "name": "groupher team",
+    "email": "support@coderplanets.com"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
