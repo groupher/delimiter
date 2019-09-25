@@ -4,7 +4,7 @@
 
 Delimiter Tool for the [Editor.js](https://editorjs.io).
 
-![](https://capella.pics/de70e7f8-56cd-4779-848f-52c3f68deb47.jpg)
+![image](https://user-images.githubusercontent.com/6184465/65581160-93971880-dfad-11e9-976b-c28873d6de6a.png)
 
 ## Installation
 
