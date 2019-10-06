@@ -1,5 +1,5 @@
 {
-  "name": "@groupher/delimiter",
+  "name": "@groupher/editor-delimiter",
   "version": "1.1.1",
   "keywords": [
     "codex editor",
@@ -10,7 +10,7 @@
   ],
   "description": "Delimiter Tool for Editor.js",
   "license": "MIT",
-  "repository": "https://github.com/groupher/delimiter",
+  "repository": "https://github.com/groupher/editor-delimiter",
   "main": "./dist/bundle.js",
   "scripts": {
     "build": "webpack --mode production",
