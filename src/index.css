@@ -1,16 +1,35 @@
 .ce-delimiter {
-    line-height: 1.6em;
-    width: 100%;
-    text-align: center;
+  line-height: 1.6em;
+  width: 100%;
+  height: 120px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.ce-delimiter:before {
-    display: inline-block;
-    content: " " !important;
-    font-size: 15px;
-    width: 150px;
-    border-bottom: 1px solid;
-    border-bottom-color: lightgrey;
-    margin-top: 50px;
-    margin-bottom: 50px;
+.delimiter-wing {
+  width: 100px;
+  height: 1px;
+  background: lightgrey;
+}
+
+.center-icon {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.center-icon svg {
+  width: 24px;
+  height: 24px;
+  fill: lightgrey;
+}
+
+.cdx-delimiter-settings {
+  display: flex;
+  border-bottom: 1px solid;
+  border-bottom-color: lightgrey;
+  padding-bottom: 3px;
+  max-width: 120px;
+  flex-wrap: wrap;
 }
