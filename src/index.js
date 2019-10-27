@@ -8,6 +8,8 @@ import coffeeIcon from './icon/divider-coffee.svg'
 import planetIcon from './icon/divider-planet.svg'
 import keyboardIcon from './icon/divider-keyboard.svg'
 import moonIcon from './icon/divider-moon.svg'
+// import barsaIcon from './icon/barcelona.svg'
+import footIcon from './icon/foot.svg'
 
 /**
  * Delimiter Block for the Editor.js.
@@ -52,42 +54,52 @@ export default class Delimiter {
       settingsButtonActive: this.api.styles.settingsButtonActive,
     };
 
-    this._data = {};
-    this._element = this.drawView();
+    this._data = {
+      iconName: 'pen',
+      icon: penIcon
+    };
 
+    this.defaultIconName = 'pen'
     this.settings = [
       {
         name: 'pen',
         title: 'pen',
         icon: penIcon,
-        default: true
       },
       {
         name: 'coffee',
         title: 'coffee',
         icon: coffeeIcon,
-        default: false
       },
       {
         name: 'keyboard',
         title: 'keyboard',
         icon: keyboardIcon,
-        default: false
       },
       {
         name: 'planet',
         title: 'planet',
         icon: planetIcon,
-        default: false
       },
       {
         name: 'moon',
         title: 'moon',
         icon: moonIcon,
-        default: false
-      }
+      },
+      // {
+      //   name: 'barsa',
+      //   title: 'barsa',
+      //   icon: barsaIcon,
+      //   default: false
+      // },
+      {
+        name: 'foot',
+        title: 'foot',
+        icon: footIcon,
+      },
     ]
 
+    this._element = this.drawView();
     this.data = data;
   }
 
@@ -100,10 +112,10 @@ export default class Delimiter {
     const wrapper = this._make('DIV', [this._CSS.block, this._CSS.wrapper])
 
     const leftWing = this._make('DIV', this._CSS.wing)
-    const centerIcon = this._make('div', this._CSS.centerIcon)
     const rightWing = this._make('DIV', this._CSS.wing)
 
-    centerIcon.innerHTML = coffeeIcon
+    const centerIcon = this._make('div', this._CSS.centerIcon)
+    centerIcon.innerHTML = this.settings.find(tune => tune.name === this.defaultIconName).icon,
 
     wrapper.appendChild(leftWing);
     wrapper.appendChild(centerIcon);
@@ -133,24 +145,47 @@ export default class Delimiter {
         innerHTML: item.icon
       });
 
-      // itemEl.addEventListener('click', () => {
-      //   this.toggleTune(item.name);
+      if (this._data.iconName === item.name) this.highlightSettingIcon(itemEl)
 
-      //   const buttons = itemEl.parentNode.querySelectorAll('.' + this.CSS.settingsButton);
-
-      //   Array.from(buttons).forEach( button => button.classList.remove(this.CSS.settingsButtonActive));
-
-      //   itemEl.classList.toggle(this.CSS.settingsButtonActive);
-      // });
-
-      // if (this._data.style === item.name) {
-      //   itemEl.classList.add(this.CSS.settingsButtonActive);
-      // }
+      itemEl.addEventListener('click', () => {
+        this.setCenterIcon(item.name);
+        this.highlightSettingIcon(itemEl)
+      });
 
       wrapper.appendChild(itemEl);
     });
 
     return wrapper;
+  }
+
+  /**
+   * highlight the setting icon in setting panel
+   * @returns {HTMLElement}
+   * @private
+   */
+  highlightSettingIcon(el) {
+    if (el.parentNode) {
+      const buttons = el.parentNode.querySelectorAll('.' + this._CSS.settingsButton);
+      Array.from(buttons).forEach( button => button.classList.remove(this._CSS.settingsButtonActive));
+    }
+
+    el.classList.add(this._CSS.settingsButtonActive);
+  }
+
+  /**
+   * Toggles List style
+   * @param {string} style - 'ordered'|'unordered'
+   */
+  setCenterIcon(name) {
+    const centerIconEl = this._element.querySelector(`.${this._CSS.centerIcon}`)
+    const icon =  this.settings.find( tune => tune.name === name ).icon
+
+    centerIconEl.innerHTML = icon
+
+    this._data = {
+      iconName: name,
+      icon
+    }
   }
 
   /**
@@ -160,7 +195,7 @@ export default class Delimiter {
    * @public
    */
   save(toolsContent) {
-    return {};
+    return this._data;
   }
 
   /**
