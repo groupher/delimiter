@@ -3,11 +3,11 @@
  */
 import css from './index.css';
 
-import penIcon from './icon/divider-pen.svg'
-import coffeeIcon from './icon/divider-coffee.svg'
-import planetIcon from './icon/divider-planet.svg'
-import keyboardIcon from './icon/divider-keyboard.svg'
-import moonIcon from './icon/divider-moon.svg'
+import penIcon from './icon/pen.svg'
+import coffeeIcon from './icon/coffee.svg'
+import planetIcon from './icon/planet.svg'
+import keyboardIcon from './icon/keyboard.svg'
+import moonIcon from './icon/moon.svg'
 // import barsaIcon from './icon/barcelona.svg'
 import footIcon from './icon/foot.svg'
 
@@ -55,8 +55,7 @@ export default class Delimiter {
     };
 
     this._data = {
-      iconName: 'pen',
-      icon: penIcon
+      type: 'pen',
     };
 
     this.defaultIconName = 'pen'
@@ -145,7 +144,7 @@ export default class Delimiter {
         innerHTML: item.icon
       });
 
-      if (this._data.iconName === item.name) this.highlightSettingIcon(itemEl)
+      if (this._data.type === item.name) this.highlightSettingIcon(itemEl)
 
       itemEl.addEventListener('click', () => {
         this.setCenterIcon(item.name);
@@ -182,10 +181,7 @@ export default class Delimiter {
 
     centerIconEl.innerHTML = icon
 
-    this._data = {
-      iconName: name,
-      icon
-    }
+    this._data.type = name
   }
 
   /**
