@@ -103,8 +103,6 @@ export default class Delimiter {
       },
     ]
 
-    console.log("--> highlightSettingIcon: ", highlightSettingIcon)
-
     this._element = this.drawView();
   }
 
