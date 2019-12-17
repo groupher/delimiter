@@ -1,3 +1,5 @@
+import { make, highlightSettingIcon } from '@groupher/editor-utils'
+
 /**
  * Build styles
  */
@@ -10,6 +12,7 @@ import keyboardIcon from './icon/keyboard.svg'
 import moonIcon from './icon/moon.svg'
 // import barsaIcon from './icon/barcelona.svg'
 import footIcon from './icon/foot.svg'
+
 
 /**
  * Delimiter Block for the Editor.js.
@@ -34,6 +37,20 @@ export default class Delimiter {
   }
 
   /**
+   * Get Tool toolbox settings
+   * icon - Tool icon's SVG
+   * title - title to show in toolbox
+   *
+   * @return {{icon: string, title: string}}
+   */
+  static get toolbox() {
+    return {
+      icon: `<svg width="19" height="4" viewBox="0 0 19 4" xmlns="http://www.w3.org/2000/svg"><path d="M1.25 0H7a1.25 1.25 0 1 1 0 2.5H1.25a1.25 1.25 0 1 1 0-2.5zM11 0h5.75a1.25 1.25 0 0 1 0 2.5H11A1.25 1.25 0 0 1 11 0z"/></svg>`,
+      title: '分割线 (Delimiter)'
+    };
+  }
+
+  /**
    * Render plugin`s main Element and fill it with saved data
    *
    * @param {{data: DelimiterData, config: object, api: object}}
@@ -41,22 +58,10 @@ export default class Delimiter {
    *   config - user config for Tool
    *   api - Editor.js API
    */
-  constructor({data, config, api}) {
+  constructor({ data, config, api }) {
     this.api = api;
 
-    this._CSS = {
-      block: this.api.styles.block,
-      wrapper: 'ce-delimiter',
-      wing: 'delimiter-wing',
-      centerIcon: 'center-icon',
-      settingsWrapper: 'cdx-delimiter-settings',
-      settingsButton: this.api.styles.settingsButton,
-      settingsButtonActive: this.api.styles.settingsButtonActive,
-    };
-
-    this._data = {
-      type: 'pen',
-    };
+    this.data = data.type || { type: 'pen' };
 
     this.defaultIconName = 'pen'
     this.settings = [
@@ -98,8 +103,25 @@ export default class Delimiter {
       },
     ]
 
+    console.log("--> highlightSettingIcon: ", highlightSettingIcon)
+
     this._element = this.drawView();
-    this.data = data;
+  }
+
+  /**
+   * Tool`s styles
+   *
+   * @returns {{baseClass: string, wrapper: string, quote: string, input: string, settingsButton: string, settingsButtonActive: string}}
+   */
+  get CSS() {
+    return {
+      block: this.api.styles.block,
+      wrapper: 'ce-delimiter',
+      wing: 'delimiter-wing',
+      centerIcon: 'center-icon',
+      settingsWrapper: 'cdx-delimiter-settings',
+      settingsButton: this.api.styles.settingsButton,
+    };
   }
 
   /**
@@ -108,12 +130,12 @@ export default class Delimiter {
    * @private
    */
   drawView() {
-    const wrapper = this._make('DIV', [this._CSS.block, this._CSS.wrapper])
+    const wrapper = make('DIV', [this.CSS.block, this.CSS.wrapper])
 
-    const leftWing = this._make('DIV', this._CSS.wing)
-    const rightWing = this._make('DIV', this._CSS.wing)
+    const leftWing = make('DIV', this.CSS.wing)
+    const rightWing = make('DIV', this.CSS.wing)
 
-    const centerIcon = this._make('div', this._CSS.centerIcon)
+    const centerIcon = make('div', this.CSS.centerIcon)
     centerIcon.innerHTML = this.settings.find(tune => tune.name === this.defaultIconName).icon,
 
     wrapper.appendChild(leftWing);
@@ -137,38 +159,26 @@ export default class Delimiter {
    * @public
    */
   renderSettings() {
-    const wrapper = this._make('div', [ this._CSS.settingsWrapper ], {});
+    const Wrapper = make('div', [ this.CSS.settingsWrapper ]);
 
     this.settings.forEach( (item) => {
-      const itemEl = this._make('div', [this._CSS.settingsButton], {
+      const itemEl = make('div', [this.CSS.settingsButton], {
         innerHTML: item.icon
       });
 
-      if (this._data.type === item.name) this.highlightSettingIcon(itemEl)
+      if (this.data.type === item.name) {
+        highlightSettingIcon(itemEl, this.api)
+      }
 
       itemEl.addEventListener('click', () => {
         this.setCenterIcon(item.name);
-        this.highlightSettingIcon(itemEl)
+        highlightSettingIcon(itemEl, this.api)
       });
 
-      wrapper.appendChild(itemEl);
+      Wrapper.appendChild(itemEl);
     });
 
-    return wrapper;
-  }
-
-  /**
-   * highlight the setting icon in setting panel
-   * @returns {HTMLElement}
-   * @private
-   */
-  highlightSettingIcon(el) {
-    if (el.parentNode) {
-      const buttons = el.parentNode.querySelectorAll('.' + this._CSS.settingsButton);
-      Array.from(buttons).forEach( button => button.classList.remove(this._CSS.settingsButtonActive));
-    }
-
-    el.classList.add(this._CSS.settingsButtonActive);
+    return Wrapper;
   }
 
   /**
@@ -176,12 +186,12 @@ export default class Delimiter {
    * @param {string} style - 'ordered'|'unordered'
    */
   setCenterIcon(name) {
-    const centerIconEl = this._element.querySelector(`.${this._CSS.centerIcon}`)
+    const centerIconEl = this._element.querySelector(`.${this.CSS.centerIcon}`)
     const icon =  this.settings.find( tune => tune.name === name ).icon
 
     centerIconEl.innerHTML = icon
 
-    this._data.type = name
+    this.data.type = name
   }
 
   /**
@@ -191,45 +201,6 @@ export default class Delimiter {
    * @public
    */
   save(toolsContent) {
-    return this._data;
-  }
-
-  /**
-   * Get Tool toolbox settings
-   * icon - Tool icon's SVG
-   * title - title to show in toolbox
-   *
-   * @return {{icon: string, title: string}}
-   */
-  static get toolbox() {
-    return {
-      icon: `<svg width="19" height="4" viewBox="0 0 19 4" xmlns="http://www.w3.org/2000/svg"><path d="M1.25 0H7a1.25 1.25 0 1 1 0 2.5H1.25a1.25 1.25 0 1 1 0-2.5zM11 0h5.75a1.25 1.25 0 0 1 0 2.5H11A1.25 1.25 0 0 1 11 0z"/></svg>`,
-      title: '分割线 (Delimiter)'
-    };
-  }
-
-  /**
-   * Helper for making Elements with attributes
-   *
-   * @param  {string} tagName           - new Element tag name
-   * @param  {array|string} classNames  - list or name of CSS classname(s)
-   * @param  {Object} attributes        - any attributes
-   * @return {Element}
-   */
-  _make(tagName, classNames = null, attributes = {}) {
-    let el = document.createElement(tagName);
-
-    if (Array.isArray(classNames)) {
-      el.classList.add(...classNames);
-    } else if (classNames) {
-      el.classList.add(classNames);
-    }
-
-    for (let attrName in attributes) {
-      el[attrName] = attributes[attrName];
-    }
-
-    return el;
+    return this.data;
   }
 }
-
