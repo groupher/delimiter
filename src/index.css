@@ -1,11 +1,12 @@
 .ce-delimiter {
   line-height: 1.6em;
-  width: 100%;
+  width: 96%;
   height: 120px;
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 1px solid transparent;
 }
 
 .delimiter-wing {

@@ -1,6 +1,6 @@
 {
   "name": "@groupher/editor-delimiter",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "keywords": [
     "codex editor",
     "delimiter",
@@ -35,7 +35,7 @@
     "webpack-cli": "^3.2.3"
   },
   "dependencies": {
-    "@groupher/editor-utils": "0.1.11",
+    "@groupher/editor-utils": "^0.2.54",
     "svg-inline-loader": "^0.8.0"
   }
 }

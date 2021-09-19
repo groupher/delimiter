@@ -1,18 +1,17 @@
-import { make, highlightSettingIcon } from '@groupher/editor-utils'
+import { make, highlightSettingIcon } from "@groupher/editor-utils";
 
 /**
  * Build styles
  */
-import css from './index.css';
+import css from "./index.css";
 
-import penIcon from './icon/pen.svg'
-import coffeeIcon from './icon/coffee.svg'
-import planetIcon from './icon/planet.svg'
-import keyboardIcon from './icon/keyboard.svg'
-import moonIcon from './icon/moon.svg'
+import penIcon from "./icon/pen.svg";
+import coffeeIcon from "./icon/coffee.svg";
+import planetIcon from "./icon/planet.svg";
+import keyboardIcon from "./icon/keyboard.svg";
+import moonIcon from "./icon/moon.svg";
 // import barsaIcon from './icon/barcelona.svg'
-import footIcon from './icon/foot.svg'
-
+import footIcon from "./icon/foot.svg";
 
 /**
  * Delimiter Block for the Editor.js.
@@ -46,7 +45,7 @@ export default class Delimiter {
   static get toolbox() {
     return {
       icon: `<svg width="19" height="4" viewBox="0 0 19 4" xmlns="http://www.w3.org/2000/svg"><path d="M1.25 0H7a1.25 1.25 0 1 1 0 2.5H1.25a1.25 1.25 0 1 1 0-2.5zM11 0h5.75a1.25 1.25 0 0 1 0 2.5H11A1.25 1.25 0 0 1 11 0z"/></svg>`,
-      title: '分割线 (Delimiter)'
+      title: "分割线 (Delimiter)",
     };
   }
 
@@ -61,33 +60,33 @@ export default class Delimiter {
   constructor({ data, config, api }) {
     this.api = api;
 
-    this.data = data.type || { type: 'pen' };
+    this.data = data.type || { type: "pen" };
 
-    this.defaultIconName = 'pen'
+    this.defaultIconName = "pen";
     this.settings = [
       {
-        name: 'pen',
-        title: 'pen',
+        name: "pen",
+        title: "pen",
         icon: penIcon,
       },
       {
-        name: 'coffee',
-        title: 'coffee',
+        name: "coffee",
+        title: "coffee",
         icon: coffeeIcon,
       },
       {
-        name: 'keyboard',
-        title: 'keyboard',
+        name: "keyboard",
+        title: "keyboard",
         icon: keyboardIcon,
       },
       {
-        name: 'planet',
-        title: 'planet',
+        name: "planet",
+        title: "planet",
         icon: planetIcon,
       },
       {
-        name: 'moon',
-        title: 'moon',
+        name: "moon",
+        title: "moon",
         icon: moonIcon,
       },
       // {
@@ -97,11 +96,11 @@ export default class Delimiter {
       //   default: false
       // },
       {
-        name: 'foot',
-        title: 'foot',
+        name: "foot",
+        title: "foot",
         icon: footIcon,
       },
-    ]
+    ];
 
     this._element = this.drawView();
   }
@@ -114,10 +113,10 @@ export default class Delimiter {
   get CSS() {
     return {
       block: this.api.styles.block,
-      wrapper: 'ce-delimiter',
-      wing: 'delimiter-wing',
-      centerIcon: 'center-icon',
-      settingsWrapper: 'cdx-delimiter-settings',
+      wrapper: "ce-delimiter",
+      wing: "delimiter-wing",
+      centerIcon: "center-icon",
+      settingsWrapper: "cdx-delimiter-settings",
       settingsButton: this.api.styles.settingsButton,
     };
   }
@@ -128,15 +127,19 @@ export default class Delimiter {
    * @private
    */
   drawView() {
-    const wrapper = make('DIV', [this.CSS.block, this.CSS.wrapper])
+    const wrapper = make("DIV", [this.CSS.block, this.CSS.wrapper], {
+      "data-skip-plus-button": true,
+      tabIndex: "0", // MUST, other wise the keydown event will not fire, which is handled by editor.js
+    });
 
-    const leftWing = make('DIV', this.CSS.wing)
-    const rightWing = make('DIV', this.CSS.wing)
+    const leftWing = make("DIV", this.CSS.wing);
+    const rightWing = make("DIV", this.CSS.wing);
 
-    const centerIcon = make('div', this.CSS.centerIcon)
-    centerIcon.innerHTML = this.settings.find(tune => tune.name === this.defaultIconName).icon,
-
-    wrapper.appendChild(leftWing);
+    const centerIcon = make("div", this.CSS.centerIcon);
+    (centerIcon.innerHTML = this.settings.find(
+      (tune) => tune.name === this.defaultIconName
+    ).icon),
+      wrapper.appendChild(leftWing);
     wrapper.appendChild(centerIcon);
     wrapper.appendChild(rightWing);
 
@@ -157,20 +160,20 @@ export default class Delimiter {
    * @public
    */
   renderSettings() {
-    const Wrapper = make('div', [ this.CSS.settingsWrapper ]);
+    const Wrapper = make("div", [this.CSS.settingsWrapper]);
 
-    this.settings.forEach( (item) => {
-      const itemEl = make('div', [this.CSS.settingsButton], {
-        innerHTML: item.icon
+    this.settings.forEach((item) => {
+      const itemEl = make("div", [this.CSS.settingsButton], {
+        innerHTML: item.icon,
       });
 
       if (this.data.type === item.name) {
-        highlightSettingIcon(itemEl, this.api)
+        highlightSettingIcon(itemEl, this.api);
       }
 
-      itemEl.addEventListener('click', () => {
+      itemEl.addEventListener("click", () => {
         this.setCenterIcon(item.name);
-        highlightSettingIcon(itemEl, this.api)
+        highlightSettingIcon(itemEl, this.api);
       });
 
       Wrapper.appendChild(itemEl);
@@ -184,12 +187,12 @@ export default class Delimiter {
    * @param {string} style - 'ordered'|'unordered'
    */
   setCenterIcon(name) {
-    const centerIconEl = this._element.querySelector(`.${this.CSS.centerIcon}`)
-    const icon =  this.settings.find( tune => tune.name === name ).icon
+    const centerIconEl = this._element.querySelector(`.${this.CSS.centerIcon}`);
+    const icon = this.settings.find((tune) => tune.name === name).icon;
 
-    centerIconEl.innerHTML = icon
+    centerIconEl.innerHTML = icon;
 
-    this.data.type = name
+    this.data.type = name;
   }
 
   /**
