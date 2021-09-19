@@ -26,11 +26,13 @@
   fill: lightgrey;
 }
 
+.cdx-settings-button svg {
+  width: 18px;
+  height: 18px;
+}
+
 .cdx-delimiter-settings {
   display: flex;
-  border-bottom: 1px solid;
-  border-bottom-color: lightgrey;
-  padding-bottom: 3px;
   max-width: 120px;
   flex-wrap: wrap;
 }
